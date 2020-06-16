@@ -4,14 +4,148 @@
 <head>
   <meta charset="utf-8">
   <title>My Flix</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-  <h1>Intro Paragragh</h1>
+  <h1>Documentation</h1>
   <p>The web application will
     provide users with access to information about different movies, directors, and genres. Users
-    will be able to sign up, update their personal information, and create a list of their favorite
-    movies.</p>
+    will be able to sign up, update their personal information, create a list of their favorite
+    movies, add or delete movie from their favorite movies list and user will be able to deregister
+  </p>
+  <table class="documentationTable">
+    <thead>
+      <tr>
+        <th>Business logic</th>
+        <th>URL</th>
+        <th>HTTP Method</th>
+        <th>Request body data format</th>
+        <th>Response body data format</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Return a list of ALL movies to the user</td>
+        <td>/movies</td>
+        <td>GET</td>
+        <td>none</td>
+        <td>A JSON object holding data about all movies</td>
+      </tr>
+      <tr>
+        <td>Return data about a single movie by title to the user</td>
+        <td>/movies/[title]</td>
+        <td>GET</td>
+        <td>none</td>
+        <td>A JSON object holding data about a single movie containing description, genre, director, image URL, whether it’s featured or not
+          <p>
+            {<br />
+            title: "Captain Marvel",<br>
+            description: "Carol Danvers becomes one of the universe's most powerful heroes when Earth is caught in the middle of a galactic war between two alien races.",<br>
+            genre: "Action, Adventure, Sci-Fi",<br>
+            director: "Anna Boden, Ryan Fleck",<br>
+            imagePath: "",<br>
+            featured: true,<br>
+            }
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>Return data about a genre (description) by name/title</td>
+        <td>/movies/[title]/genre</td>
+        <td>GET</td>
+        <td>none</td>
+        <td>A JSON object holding data about genre (description) by name/title
+          <p>
+            {<br />
+            title: "Captain Marvel",<br>
+            genre: "Action, Adventure, Sci-Fi",<br>
+            }
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>Return data about a director by name</td>
+        <td>/movies/director/[name]</td>
+        <td>GET</td>
+        <td>none</td>
+        <td>A JSON object holding data about director's bio, birth year, death year
+          <p>
+            {<br />
+            name: "Anna Boden",<br>
+            bio: "Anna Boden is an American film director, cinematographer, editor, and screenwriter best known as the co-writer of the 2006 film Half Nelson.",<br>
+            birthYear: "1979",<br>
+            deathYear: null,<br>
+            }
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>Allow new users to register</td>
+        <td>/users</td>
+        <td>POST</td>
+        <td>A JSON object holding data about the new user
+          <p>
+            {<br>
+            username: "username",<br>
+            password: "password",<br>
+            email: "testuser@gmail.com",<br>
+            birthday: "2001-01-01",<br>
+            }
+          </p>
+        </td>
+
+        <td>A JSON object holding data about the new user including ID
+          <p>
+            { <br>
+            _id: "5ea31bfbf584f408956d506d",<br>
+            name: "username",<br>
+            password: "password",<br>
+            email: "testuser@gmail.com",<br>
+            birthday: "2001-01-01",<br>
+            }
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>Allow users to update their user info</td>
+        <td>/users/[username]</td>
+        <td>PUT</td>
+        <td>A JSON object holding the data to be updated
+          <p>
+              {<br>
+                "username": "newusername",<br>
+                "password": "newpassword",<br>
+                "email": "newtestuser@gmail.com",<br>
+                "birthday": "2001-01-02",<br>
+              }
+            </p>
+          </td>
+        <td>A text message indicating the user data is successfully updated</td>
+      </tr>
+      <tr>
+        <td>Allow users to add a movie to their list of favorites</td>
+        <td>/users/[username]/movies/favorites/[title]</td>
+        <td>POST</td>
+        <td>none</td>
+        <td>A text message indicating the movie has been added to their favorite list</td>
+      </tr>
+      <tr>
+        <td>Allow users to remove a movie from their list of favorites</td>
+        <td>/users/[username]/movies/favorites/[title]</td>
+        <td>DELETE</td>
+        <td>none</td>
+        <td>A text message indicating the movie has been removed from their favorite list</td>
+      </tr>
+      <tr>
+        <td>Allow existing users to deregister</td>
+        <td>/users/[username]</td>
+        <td>DELETE</td>
+        <td>none</td>
+        <td>A text message indicating the user is successfully deregisterd</td>
+      </tr>
+    </tbody>
+  </table>
 </body>
 
 </html>
