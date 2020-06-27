@@ -24,6 +24,7 @@
         <th>Response body data format</th>
       </tr>
     </thead>
+
     <tbody>
       <tr>
         <td>Return a list of ALL movies to the user</td>
@@ -40,26 +41,36 @@
         <td>A JSON object holding data about a single movie containing description, genre, director, image URL, whether it’s featured or not
           <p>
             {<br />
-            title: "Captain Marvel",<br>
-            description: "Carol Danvers becomes one of the universe's most powerful heroes when Earth is caught in the middle of a galactic war between two alien races.",<br>
-            genre: "Action, Adventure, Sci-Fi",<br>
-            director: "Anna Boden, Ryan Fleck",<br>
-            imagePath: "",<br>
-            featured: true,<br>
+            "Genre": {<br />
+            "Name": "Drama",<br />
+            "Description": "Drama Films are serious presentations or stories with settings or life situations that portray realistic characters in conflict with either themselves, others, or forces of nature."
+            },<br />
+            "Director": {<br />
+            "Name": "Mati Diop",<br />
+            "Bio": "Mati Diop is a French actress and film director",<br />
+            "Birth": "1982"<br />
+            },<br />
+            "_id": "5ef27b1a7ef67f33a817fff9",<br />
+            "Title": "Atlantics",<br />
+            "Description": "In a popular suburb of Dakar, workers on the construction site of a futuristic tower, without pay for months, decide to leave the country by the ocean for a better future. Among them is Souleiman, the lover of Ada,
+            promised to another.",<br />
+            "ImagePath": "atlantics.png",<br />
+            "Featured": false <br />
             }
           </p>
         </td>
       </tr>
       <tr>
         <td>Return data about a genre (description) by name/title</td>
-        <td>/movies/[title]/genre</td>
+        <td>/movies/genre/[genre]</td>
         <td>GET</td>
         <td>none</td>
         <td>A JSON object holding data about genre (description) by name/title
           <p>
             {<br />
-            title: "Captain Marvel",<br>
-            genre: "Action, Adventure, Sci-Fi",<br>
+            "Name": "Action",<br />
+            "Description": "Action film, in which the protagonist or protagonists are thrust into a series of events that typically include violence, extended fighting, physical feats and frantic chases."
+            <br />
             }
           </p>
         </td>
@@ -72,10 +83,9 @@
         <td>A JSON object holding data about director's bio, birth year, death year
           <p>
             {<br />
-            name: "Anna Boden",<br>
-            bio: "Anna Boden is an American film director, cinematographer, editor, and screenwriter best known as the co-writer of the 2006 film Half Nelson.",<br>
-            birthYear: "1979",<br>
-            deathYear: null,<br>
+            "Name": "Rob Letterman",<br />
+            "Bio": "Robert Thomas Letterman is an American film director and screenwriter.",<br />
+            "Birth": "1970"<br />
             }
           </p>
         </td>
@@ -86,23 +96,25 @@
         <td>POST</td>
         <td>A JSON object holding data about the new user
           <p>
-            {<br>
-            username: "username",<br>
-            password: "password",<br>
-            email: "testuser@gmail.com",<br>
-            birthday: "2001-01-01",<br>
+            {<br />
+            "Username": "username2",<br />
+            "Password": "password2",<br />
+            "Email": "testuser2@gmail.com",<br />
+            "Birthday": "2008-01-01"<br />
             }
           </p>
         </td>
 
         <td>A JSON object holding data about the new user including ID
           <p>
-            { <br>
-            _id: "5ea31bfbf584f408956d506d",<br>
-            name: "username",<br>
-            password: "password",<br>
-            email: "testuser@gmail.com",<br>
-            birthday: "2001-01-01",<br>
+            {<br />
+            "FavoriteMovies": [],<br />
+            "_id": "5ef686399f12862b705e4172",<br />
+            "Username": "username2",<br />
+            "Password": "password2",<br />
+            "Email": "testuser2@gmail.com",<br />
+            "Birthday": "2008-01-01T00:00:00.000Z",<br />
+            "__v": 0<br />
             }
           </p>
         </td>
@@ -113,29 +125,66 @@
         <td>PUT</td>
         <td>A JSON object holding the data to be updated
           <p>
-              {<br>
-                "username": "newusername",<br>
-                "password": "newpassword",<br>
-                "email": "newtestuser@gmail.com",<br>
-                "birthday": "2001-01-02",<br>
-              }
-            </p>
-          </td>
-        <td>A text message indicating the user data is successfully updated</td>
+            {<br />
+            "Username": "newusername",<br />
+            "Password": "newpassword",<br />
+            "Email": "newtestuser@gmail.com",<br />
+            "Birthday": "2001-01-02"<br />
+            }
+          </p>
+        </td>
+        <td>A JSON object holding the data of successfully updated user data
+          <p>
+            {<br />
+            "FavoriteMovies": [],<br />
+            "_id": "5ef680e92cd7354a78df3bab",<br />
+            "Username": "newusername",<br />
+            "Password": "newpassword",<br />
+            "Email": "newtestuser@gmail.com",<br />
+            "Birthday": "2001-01-02T00:00:00.000Z",<br />
+            "__v": 0<br />
+            }
+          </p>
+        </td>
       </tr>
       <tr>
         <td>Allow users to add a movie to their list of favorites</td>
-        <td>/users/[username]/movies/favorites/[title]</td>
+        <td>/users/[username]/movies/favorites/[movieID]</td>
         <td>POST</td>
         <td>none</td>
-        <td>A text message indicating the movie has been added to their favorite list</td>
+        <td>A JSON object holding the data of successfully added movie to user list of favorites
+          <p>
+            {<br />"FavoriteMovies": [
+            "5ef282ac7ef67f33a8180000",
+            "5ef283177ef67f33a8180001"
+            ],<br />
+            "_id": "5ef680e92cd7354a78df3bab",<br />
+            "Username": "newusername",<br />
+            "Password": "newpassword",<br />
+            "Email": "newtestuser@gmail.com",<br />
+            "Birthday": "2001-01-02T00:00:00.000Z",<br />
+            "__v": 0<br />
+            }
+        </td>
       </tr>
       <tr>
         <td>Allow users to remove a movie from their list of favorites</td>
-        <td>/users/[username]/movies/favorites/[title]</td>
+        <td>/users/[username]/movies/favorites/[movieID]</td>
         <td>DELETE</td>
         <td>none</td>
-        <td>A text message indicating the movie has been removed from their favorite list</td>
+        <td>A JSON object holding the data of successfully deleted movie from the user list of favorites
+          <p>
+            {<br />"FavoriteMovies": [
+            "5ef282ac7ef67f33a8180000",
+            ],<br />
+            "_id": "5ef680e92cd7354a78df3bab",<br />
+            "Username": "newusername",<br />
+            "Password": "newpassword",<br />
+            "Email": "newtestuser@gmail.com",<br />
+            "Birthday": "2001-01-02T00:00:00.000Z",<br />
+            "__v": 0<br />
+            }
+        </td>
       </tr>
       <tr>
         <td>Allow existing users to deregister</td>
