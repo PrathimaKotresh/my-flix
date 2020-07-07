@@ -2,6 +2,7 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   uuid = require('uuid'),
   //Morgan middleware library to log all requests
+
   morgan = require('morgan');
 const app = express();
 app.use(bodyParser.json());
@@ -10,8 +11,10 @@ const passport = require('passport');
 require('./passport.js');
 
 //require express-validator library
-
-const { check, validationResult } = require('express-validator');
+const {
+  check,
+  validationResult
+} = require('express-validator');
 
 //integrate Mongoose into REST API
 
@@ -28,7 +31,9 @@ mongoose.connect('mongodb://localhost:27017/myFlixDB', {
 app.use(morgan('common'));
 
 // Gets the list of all movies
-app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/movies', passport.authenticate('jwt', {
+  session: false
+}), (req, res) => {
   Movies.find()
     .then((movies) => {
       res.status(201).json(movies);
@@ -83,46 +88,52 @@ app.get('/movies/director/:name', (req, res) => {
 
 // Creates a new user
 app.post('/users',
-// Validation logic here for request
-[
-    check('Username', 'Username is required').isLength({min: 5}),
+  // Validation logic here for request
+  [
+    check('Username', 'Username is required').isLength({
+      min: 5
+    }),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
     check('Password', 'Password is required').not().isEmpty(),
     check('Email', 'Email does not appear to be valid').isEmail()
   ], (req, res) => {
     // check the validation object for errors
     let errors = validationResult(req);
-
     if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
+      return res.status(422).json({
+        errors: errors.array()
+      });
     }
-  let hashedPassword = Users.hashPassword(req.body.Password);
-  Users.findOne({ Username: req.body.Username }) // Search to see if a user with the requested username already exists
-    .then((user) => {
-      if (user) {
-      //If the user is found, send a response that it already exists
-        return res.status(400).send(req.body.Username + ' already exists');
-      } else {
-        Users
-          .create({
-            Username: req.body.Username,
-            Password: hashedPassword,
-            Email: req.body.Email,
-            Birthday: req.body.Birthday
-          })
-          .then((user) => { res.status(201).json(user) })
-          .catch((error) => {
-            console.error(error);
-            res.status(500).send('Error: ' + error);
-          });
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send('Error: ' + error);
-    });
-});
-
+    let hashedPassword = Users.hashPassword(req.body.Password);
+    Users.findOne({
+        Username: req.body.Username
+      }) // Search to see if a user with the requested username already exists
+      .then((user) => {
+        if (user) {
+          //If the user is found, send a response that it already exists
+          return res.status(400).send(req.body.Username + ' already exists');
+        } else {
+          Users
+            .create({
+              Username: req.body.Username,
+              Password: hashedPassword,
+              Email: req.body.Email,
+              Birthday: req.body.Birthday
+            })
+            .then((user) => {
+              res.status(201).json(user)
+            })
+            .catch((error) => {
+              console.error(error);
+              res.status(500).send('Error: ' + error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+      });
+  });
 
 // Updates the user data
 app.put('/users/:Username', (req, res) => {
@@ -211,8 +222,8 @@ app.delete('/users/:Username', (req, res) => {
 
 // listen for requests
 const port = process.env.PORT || 8080;
-app.listen(port, '0.0.0.0',() => {
- console.log('Listening on Port ' + port);
+app.listen(port, '0.0.0.0', () => {
+  console.log('Listening on Port ' + port);
 });
 
 app.use(express.static('public'));
