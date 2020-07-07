@@ -48,6 +48,10 @@ app.use(cors({
   }
 }));
 
+app.get('/', (req, res) => {
+  res.send('<h1>' + '<b>Welcome to myFlix!<b>' + '</h1>')
+})
+
 // Gets the list of all movies
 app.get('/movies', passport.authenticate('jwt', {
   session: false
