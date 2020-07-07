@@ -1,3 +1,4 @@
+const cors = require('cors');
 const express = require('express'),
   bodyParser = require('body-parser'),
   uuid = require('uuid'),
@@ -29,6 +30,19 @@ mongoose.connect('mongodb://localhost:27017/myFlixDB', {
 });
 
 app.use(morgan('common'));
+
+let allowedOrigins = '*';
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) { // If a specific origin isn’t found on the list of allowed origins
+      let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
+      return callback(new Error(message), false);
+    }
+    return callback(null, true);
+  }
+}));
 
 // Gets the list of all movies
 app.get('/movies', passport.authenticate('jwt', {
@@ -88,7 +102,6 @@ app.get('/movies/director/:name', (req, res) => {
 
 // Creates a new user
 app.post('/users',
-  // Validation logic here for request
   [
     check('Username', 'Username is required').isLength({
       min: 5
@@ -96,9 +109,11 @@ app.post('/users',
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
     check('Password', 'Password is required').not().isEmpty(),
     check('Email', 'Email does not appear to be valid').isEmail()
-  ], (req, res) => {
+  ],
+  (req, res) => {
     // check the validation object for errors
     let errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       return res.status(422).json({
         errors: errors.array()
@@ -136,28 +151,45 @@ app.post('/users',
   });
 
 // Updates the user data
-app.put('/users/:Username', (req, res) => {
-  Users.findOneAndUpdate({
-      Username: req.params.Username
-    }, {
-      $set: {
-        Username: req.body.Username,
-        Password: req.body.Password,
-        Email: req.body.Email,
-        Birthday: req.body.Birthday
-      }
-    }, {
-      new: true
-    }, // This line makes sure that the updated document is returned
-    (err, updatedUser) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-      } else {
-        res.json(updatedUser);
-      }
-    });
-});
+app.put('/users/:Username',
+  [
+    check('Username', 'Username is required').isLength({
+      min: 5
+    }),
+    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email does not appear to be valid').isEmail()
+  ], (req, res) => {
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        errors: errors.array()
+      });
+    }
+
+    let hashedPassword = Users.hashPassword(req.body.Password);
+    Users.findOneAndUpdate({
+        Username: req.params.Username
+      }, {
+        $set: {
+          Username: req.body.Username,
+          Password: req.body.Password,
+          Email: req.body.Email,
+          Birthday: req.body.Birthday
+        }
+      }, {
+        new: true
+      }, // This line makes sure that the updated document is returned
+      (err, updatedUser) => {
+        if (err) {
+          console.error(err);
+          res.status(500).send('Error: ' + err);
+        } else {
+          res.json(updatedUser);
+        }
+      });
+  });
 
 // Add a movie to user's favorite's list
 app.post('/users/:username/movies/favorites/:movieID', (req, res) => {
@@ -221,13 +253,12 @@ app.delete('/users/:Username', (req, res) => {
 });
 
 // listen for requests
-const port = process.env.PORT || 8080;
-app.listen(port, '0.0.0.0', () => {
-  console.log('Listening on Port ' + port);
-});
+app.listen(8080, () => {
+  console.log('Your app is listening on port 8080.');
 
-app.use(express.static('public'));
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Something broke!');
+  app.use(express.static('public'));
+  app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+  });
 });
