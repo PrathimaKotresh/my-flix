@@ -35,7 +35,7 @@ mongoose.connect(process.env.CONNECTION_URI, {
 });
 
 app.use(morgan('common'));
-let allowedOrigins = '*';
+var allowedOrigins = ['http://localhost:1234', '*'];
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -53,9 +53,7 @@ app.get('/', (req, res) => {
 })
 
 // Gets the list of all movies
-app.get('/movies', passport.authenticate('jwt', {
-  session: false
-}), (req, res) => {
+app.get('/movies'), (req, res) => {
   Movies.find()
     .then((movies) => {
       res.status(201).json(movies);
@@ -69,8 +67,8 @@ app.get('/movies', passport.authenticate('jwt', {
 // Gets the data about a single movie, by title
 app.get('/movies/:title', (req, res) => {
   Movies.findOne({
-      Title: req.params.title
-    })
+    Title: req.params.title
+  })
     .then((movie) => {
       res.status(201).json(movie);
     })
@@ -83,8 +81,8 @@ app.get('/movies/:title', (req, res) => {
 // Gets the genre info by genre title
 app.get('/movies/genre/:genre', (req, res) => {
   Movies.findOne({
-      'Genre.Name': req.params.genre
-    })
+    'Genre.Name': req.params.genre
+  })
     .then((movie) => {
       res.status(201).json(movie.Genre);
     })
@@ -97,8 +95,8 @@ app.get('/movies/genre/:genre', (req, res) => {
 // Gets the director data by name
 app.get('/movies/director/:name', (req, res) => {
   Movies.findOne({
-      "Director.Name": req.params.name
-    })
+    "Director.Name": req.params.name
+  })
     .then((movie) => {
       res.json(movie.Director);
     })
@@ -129,8 +127,8 @@ app.post('/users',
     }
     let hashedPassword = Users.hashPassword(req.body.Password);
     Users.findOne({
-        Username: req.body.Username
-      }) // Search to see if a user with the requested username already exists
+      Username: req.body.Username
+    }) // Search to see if a user with the requested username already exists
       .then((user) => {
         if (user) {
           //If the user is found, send a response that it already exists
@@ -176,17 +174,17 @@ app.put('/users/:Username',
     }
     let hashedPassword = Users.hashPassword(req.body.Password);
     Users.findOneAndUpdate({
-        Username: req.params.Username
-      }, {
-        $set: {
-          Username: req.body.Username,
-          Password: req.body.Password,
-          Email: req.body.Email,
-          Birthday: req.body.Birthday
-        }
-      }, {
-        new: true
-      }, // This line makes sure that the updated document is returned
+      Username: req.params.Username
+    }, {
+      $set: {
+        Username: req.body.Username,
+        Password: req.body.Password,
+        Email: req.body.Email,
+        Birthday: req.body.Birthday
+      }
+    }, {
+      new: true
+    }, // This line makes sure that the updated document is returned
       (err, updatedUser) => {
         if (err) {
           console.error(err);
@@ -200,14 +198,14 @@ app.put('/users/:Username',
 // Add a movie to user's favorite's list
 app.post('/users/:username/movies/favorites/:movieID', (req, res) => {
   Users.findOneAndUpdate({
-      Username: req.params.username
-    }, {
-      $push: {
-        FavoriteMovies: req.params.movieID
-      }
-    }, {
-      new: true
-    }, // This line makes sure that the updated document is returned
+    Username: req.params.username
+  }, {
+    $push: {
+      FavoriteMovies: req.params.movieID
+    }
+  }, {
+    new: true
+  }, // This line makes sure that the updated document is returned
     (err, updatedUser) => {
       if (err) {
         console.error(err);
@@ -222,14 +220,14 @@ app.post('/users/:username/movies/favorites/:movieID', (req, res) => {
 app.delete('/users/:username/movies/favorites/:movieID', (req, res) => {
   console.log(req.params.movieID)
   Users.findOneAndUpdate({
-      Username: req.params.username
-    }, {
-      $pull: {
-        FavoriteMovies: req.params.movieID
-      }
-    }, {
-      new: true
-    }, // This line makes sure that the updated document is returned
+    Username: req.params.username
+  }, {
+    $pull: {
+      FavoriteMovies: req.params.movieID
+    }
+  }, {
+    new: true
+  }, // This line makes sure that the updated document is returned
     (err, updatedUser) => {
       if (err) {
         console.error(err);
@@ -243,8 +241,8 @@ app.delete('/users/:username/movies/favorites/:movieID', (req, res) => {
 // Deregisters user
 app.delete('/users/:Username', (req, res) => {
   Users.findOneAndRemove({
-      Username: req.params.Username
-    })
+    Username: req.params.Username
+  })
     .then((user) => {
       if (!user) {
         res.status(400).send(req.params.Username + ' was not found');
