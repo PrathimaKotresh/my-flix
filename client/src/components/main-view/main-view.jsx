@@ -19,7 +19,6 @@ export class MainView extends React.Component {
   componentDidMount() {
     axios.get('https://myflix-movieapp.herokuapp.com/movies')
       .then(response => {
-        console.log('response - ', response)
         // Assign the result to the state
         this.setState({
           movies: response.data
@@ -40,7 +39,6 @@ export class MainView extends React.Component {
 
     // Before the movies have been loaded
     if (!movies) return <div className="main-view" />;
-    console.log('movies - ', movies)
     return (
       <div className="main-view">
         {selectedMovie
