@@ -7,7 +7,6 @@ const express = require('express'),
   morgan = require('morgan');
 const app = express();
 app.use(bodyParser.json());
-let auth = require('./auth.js')(app);
 const passport = require('passport');
 require('./passport.js');
 
@@ -47,6 +46,8 @@ app.use(cors({
     return callback(null, true);
   }
 }));
+
+let auth = require('./auth.js')(app);
 
 app.get('/', (req, res) => {
   res.send('<h1>' + '<b>Welcome to myFlix!<b>' + '</h1>')
