@@ -31669,24 +31669,6 @@ var MovieView = /*#__PURE__*/function (_React$Component) {
   }
 
   _createClass(MovieView, [{
-    key: "getMovies",
-    value: function getMovies(token) {
-      var _this2 = this;
-
-      axios.get('https://myflix-movieapp.herokuapp.com/movies', {
-        headers: {
-          Authorization: "Bearer ".concat(token)
-        }
-      }).then(function (response) {
-        // Assign the result to the state
-        _this2.setState({
-          movies: response.data
-        });
-      }).catch(function (error) {
-        console.log(error);
-      });
-    }
-  }, {
     key: "render",
     value: function render() {
       var _this$props = this.props,
@@ -33007,14 +32989,15 @@ function LoginView(props) {
     e.preventDefault();
     /* Send a request to the server for authentication */
 
-    _axios.default.post('YOUR_API_URL/login', {
+    _axios.default.post('http://myflix-movieapp.herokuapp.com/login', {
       Username: username,
       Password: password
     }).then(function (response) {
       var data = response.data;
+      console.log(data);
       props.onLoggedIn(data);
     }).catch(function (e) {
-      console.log('no such user');
+      console.log('no such user - ', e);
     });
   };
 
@@ -33124,9 +33107,25 @@ var MainView = /*#__PURE__*/function (_React$Component) {
   _createClass(MainView, [{
     key: "componentDidMount",
     value: function componentDidMount() {
+      var accessToken = localStorage.getItem('token');
+
+      if (accessToken !== null) {
+        this.setState({
+          user: localStorage.getItem('user')
+        });
+        this.getMovies(accessToken);
+      }
+    }
+  }, {
+    key: "getMovies",
+    value: function getMovies(token) {
       var _this2 = this;
 
-      _axios.default.get('https://myflix-movieapp.herokuapp.com/movies').then(function (response) {
+      _axios.default.get('https://myflix-movieapp.herokuapp.com/movies', {
+        headers: {
+          Authorization: "Bearer ".concat(token)
+        }
+      }).then(function (response) {
         // Assign the result to the state
         _this2.setState({
           movies: response.data
@@ -33397,7 +33396,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52986" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55794" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

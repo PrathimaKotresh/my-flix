@@ -24,7 +24,19 @@ export class MainView extends React.Component {
   }
   // One of the "hooks" available in a React Component
   componentDidMount() {
-    axios.get('https://myflix-movieapp.herokuapp.com/movies')
+    let accessToken = localStorage.getItem('token');
+    if (accessToken !== null) {
+      this.setState({
+        user: localStorage.getItem('user')
+      });
+      this.getMovies(accessToken);
+    }
+  }
+
+  getMovies(token) {
+    axios.get('https://myflix-movieapp.herokuapp.com/movies', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
       .then(response => {
         // Assign the result to the state
         this.setState({

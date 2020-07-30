@@ -10,21 +10,6 @@ export class MovieView extends React.Component {
     this.state = {};
   }
 
-  getMovies(token) {
-    axios.get('https://myflix-movieapp.herokuapp.com/movies', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then(response => {
-        // Assign the result to the state
-        this.setState({
-          movies: response.data
-        });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
-
   render() {
     const { movie, onBackClick } = this.props;
 
