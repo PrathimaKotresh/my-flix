@@ -8,7 +8,6 @@ import axios from 'axios';
 export function LoginView(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
   const handleSubmit = (e) => {
     e.preventDefault();
     /* Send a request to the server for authentication */
@@ -18,11 +17,10 @@ export function LoginView(props) {
     })
       .then(response => {
         const data = response.data;
-        console.log(data)
         props.onLoggedIn(data);
       })
       .catch(e => {
-        console.log('no such user - ', e)
+        console.log('no such user')
       });
   };
 

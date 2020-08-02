@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
+import { Link } from "react-router-dom";
 
 export class MovieView extends React.Component {
 
@@ -11,7 +12,7 @@ export class MovieView extends React.Component {
   }
 
   render() {
-    const { movie, onBackClick } = this.props;
+    const { movie } = this.props;
 
     if (!movie) return null;
 
@@ -35,10 +36,10 @@ export class MovieView extends React.Component {
           <span className="label">Director: </span>
           <span className="value">{movie.Director.Name}</span>
         </div>
-        <Button variant="primary" type="submit" onClick={() => onBackClick()}>Back</Button>
+        <Link to={`/`}>
+          <Button variant="link">Back</Button>
+        </Link>
       </div>
-
-
     );
   }
 }
@@ -50,5 +51,4 @@ MovieView.propTypes = {
     Genre: PropTypes.object,
     Director: PropTypes.object,
   }).isRequired,
-  onBackClick: PropTypes.func.isRequired
 };
