@@ -1,3 +1,11 @@
+.header {
+  padding: 10px 100px;
+  font-size: 20px;
+}
+
+.navbar-brand {
+  font-size: xx-large;
+}
 .my-flix {
   color: steelblue;
 }

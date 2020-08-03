@@ -9,6 +9,9 @@ import { DirectorView } from '../director-view/director-view';
 import { GenreView } from '../genre-view/genre-view';
 import Button from 'react-bootstrap/Button';
 import { Link } from "react-router-dom";
+import { Navbar, Nav, NavDropdown, Form, FormControl } from 'react-bootstrap';
+import './main-view.scss';
+
 
 export class MainView extends React.Component {
   constructor() {
@@ -107,6 +110,14 @@ export class MainView extends React.Component {
     return (
       <Router>
         <div className="main-view">
+          <Navbar bg="dark" variant="dark" className="header">
+            <Navbar.Brand href="#home">MyFlix</Navbar.Brand>
+            <Nav className="mr-auto" />
+            <Nav>
+              <Nav.Link href="/register">Sign Up</Nav.Link>
+              <Nav.Link href="/login">Login</Nav.Link>
+            </Nav>
+          </Navbar>
           <Route exact path="/" render={() => {
             if (!user) return (
               <div className="main-view" style={{ margin: '20px' }}>
