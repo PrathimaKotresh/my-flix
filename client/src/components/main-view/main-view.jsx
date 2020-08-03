@@ -7,11 +7,8 @@ import { RegistrationView } from '../registration-view/registration-view';
 import { LoginView } from '../login-view/login-view';
 import { DirectorView } from '../director-view/director-view';
 import { GenreView } from '../genre-view/genre-view';
-import Button from 'react-bootstrap/Button';
-import { Link } from "react-router-dom";
-import { Navbar, Nav, NavDropdown, Form, FormControl } from 'react-bootstrap';
+import { Navbar, Nav } from 'react-bootstrap';
 import './main-view.scss';
-
 
 export class MainView extends React.Component {
   constructor() {
@@ -110,22 +107,18 @@ export class MainView extends React.Component {
     return (
       <Router>
         <div className="main-view">
-          <Navbar bg="dark" variant="dark" className="header">
+          <Navbar bg="dark" variant="dark" className="header" fixed="top">
             <Navbar.Brand href="#home">MyFlix</Navbar.Brand>
             <Nav className="mr-auto" />
-            <Nav>
-              <Nav.Link href="/register">Sign Up</Nav.Link>
-              <Nav.Link href="/login">Login</Nav.Link>
-            </Nav>
+            {!user && <Nav>
+              <Nav.Link href="/register">SignUp</Nav.Link>
+              <Nav.Link href="/">Login</Nav.Link>
+            </Nav>}
           </Navbar>
           <Route exact path="/" render={() => {
             if (!user) return (
               <div className="main-view" style={{ margin: '20px' }}>
                 <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
-                <label>Not yet a member?</label>
-                <Link to={`/register`}>
-                  <Button variant="link"> Register</Button>
-                </Link>
               </div>
             );
             return (

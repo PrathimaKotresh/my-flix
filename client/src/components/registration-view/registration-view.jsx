@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import PropTypes from 'prop-types';
+import './registration-view.scss';
 
 export function RegistrationView(props) {
   const [username, setUsername] = useState('');
@@ -29,9 +30,9 @@ export function RegistrationView(props) {
   };
 
   return (
-    <Form style={{ margin: '20px' }}>
+    <Form className="registerForm">
       <Form.Row className="align-items-center">
-        <Col xs sm={6}>
+        <Col xs sm={6} className="registerFormContent">
           <Form.Group>
             <Form.Label>Username:</Form.Label>
             <Form.Control type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />

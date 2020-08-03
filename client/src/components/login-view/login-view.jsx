@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
+import { Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import './login-view.scss';
 
 export function LoginView(props) {
   const [username, setUsername] = useState('');
@@ -25,9 +27,9 @@ export function LoginView(props) {
   };
 
   return (
-    <Form>
+    <Form className="loginForm">
       <Form.Row className="align-items-center">
-        <Col xs sm={6}>
+        <Col xs sm={6} className="loginFormContent">
           <Form.Group>
             <Form.Label>Username:</Form.Label>
             <Form.Control type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />
@@ -39,6 +41,11 @@ export function LoginView(props) {
           <Button variant="primary" type="submit" onClick={handleSubmit}>
             Login
           </Button>
+          <br />
+          <label>Not yet a member?</label>
+          <Link to={`/register`}>
+            <Button variant="link"> Register</Button>
+          </Link>
         </Col>
       </Form.Row>
     </Form>
