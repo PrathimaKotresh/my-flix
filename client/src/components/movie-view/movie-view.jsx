@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import { Link } from "react-router-dom";
+import './movie-view.scss';
 
 export class MovieView extends React.Component {
 
@@ -12,8 +13,8 @@ export class MovieView extends React.Component {
   }
 
   render() {
-    const { movie } = this.props;
-
+    const { movie, addToFavourites, isFavourite, removeFromFavourites } = this.props;
+    const buttonText = isFavourite ? 'Remove from Favorites' : 'Add to Favorites'
     if (!movie) return null;
 
     return (
@@ -40,6 +41,7 @@ export class MovieView extends React.Component {
             <span className="value">{movie.Director.Name}</span>
           </Link>
         </div>
+        <Button variant="link" onClick={() => isFavourite ? removeFromFavourites(movie._id) : addToFavourites(movie._id)}>{buttonText}</Button>
         <Link to={`/`}>
           <Button variant="link">Back</Button>
         </Link>
@@ -55,4 +57,7 @@ MovieView.propTypes = {
     Genre: PropTypes.object,
     Director: PropTypes.object,
   }).isRequired,
+  addToFavourites: PropTypes.func,
+  isFavourite: PropTypes.bool.isRequired,
+  removeFromFavourites: PropTypes.func,
 };

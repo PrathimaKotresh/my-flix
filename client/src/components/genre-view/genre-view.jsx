@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import Badge from 'react-bootstrap/Badge';
 import axios from 'axios';
+import './genre-view.scss';
 
 export function GenreView(props) {
   const [genre, setGenre] = useState(null);
@@ -18,9 +20,10 @@ export function GenreView(props) {
   if (!genre) return null
 
   return (
-    <div>
-      <div>{genre.Name}</div>
-      <div>{genre.Description}</div>
+    <div className="genreContent">
+      <Badge variant="primary">Genre</Badge>{' - ' + genre.Name}
+      <br />
+      <Badge variant="primary">Description</Badge>{' - ' + genre.Description}
     </div>
   );
 }

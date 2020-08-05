@@ -22,7 +22,7 @@ export function LoginView(props) {
         props.onLoggedIn(data);
       })
       .catch(e => {
-        console.log('no such user')
+        console.log('No such user')
       });
   };
 
@@ -44,7 +44,7 @@ export function LoginView(props) {
           <br />
           <label>Not yet a member?</label>
           <Link to={`/register`}>
-            <Button variant="link"> Register</Button>
+            <Button variant="link"> Sign Up</Button>
           </Link>
         </Col>
       </Form.Row>
