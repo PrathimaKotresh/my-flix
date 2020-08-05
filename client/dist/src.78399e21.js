@@ -50092,6 +50092,8 @@ var MainView = /*#__PURE__*/function (_React$Component) {
       }, "Sign Up"), _react.default.createElement(_reactBootstrap.Nav.Link, {
         href: "/"
       }, "Login")), user && _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(_reactBootstrap.Nav, null, _react.default.createElement(_reactBootstrap.Nav.Link, {
+        href: "/"
+      }, "Home")), _react.default.createElement(_reactBootstrap.Nav, null, _react.default.createElement(_reactBootstrap.Nav.Link, {
         onClick: function onClick() {
           return _this8.onFavouritesClick();
         }
@@ -50304,7 +50306,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55438" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50575" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -230,6 +230,9 @@ export class MainView extends React.Component {
               user && (
                 <React.Fragment>
                   <Nav>
+                    <Nav.Link href="/">Home</Nav.Link>
+                  </Nav>
+                  <Nav>
                     <Nav.Link onClick={() => this.onFavouritesClick()}>My Favorites</Nav.Link>
                   </Nav>
                   <NavDropdown title={user}>
