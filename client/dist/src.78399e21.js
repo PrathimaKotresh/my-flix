@@ -52480,7 +52480,7 @@ var MainView = /*#__PURE__*/function (_React$Component) {
         Birthday: null,
         FavouriteMovies: []
       });
-      window.open('/', '_self');
+      window.open('/client', '_self');
     }
   }, {
     key: "onRegisterClick",
@@ -52506,7 +52506,7 @@ var MainView = /*#__PURE__*/function (_React$Component) {
           isRegister: false
         });
 
-        window.open('/', '_self');
+        window.open('/client', '_self');
       }).catch(function (e) {
         console.log('No such user');
       });
@@ -52597,7 +52597,7 @@ var MainView = /*#__PURE__*/function (_React$Component) {
           });
 
           localStorage.setItem('user', data.Username);
-          window.open('/', '_self');
+          window.open('/client', '_self');
         }).catch(function (e) {
           console.log('Error updating profile - ', e);
         });
@@ -52632,7 +52632,9 @@ var MainView = /*#__PURE__*/function (_React$Component) {
       if (!movies) return _react.default.createElement("div", {
         className: "main-view"
       });
-      return _react.default.createElement(_reactRouterDom.BrowserRouter, null, _react.default.createElement("div", {
+      return _react.default.createElement(_reactRouterDom.BrowserRouter, {
+        basename: "/client"
+      }, _react.default.createElement("div", {
         className: "main-view"
       }, _react.default.createElement(_reactBootstrap.Navbar, {
         bg: "dark",
@@ -52964,7 +52966,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49421" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56941" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
