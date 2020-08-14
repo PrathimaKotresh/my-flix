@@ -240,7 +240,7 @@ export class MainView extends React.Component {
               )
             }
           </Navbar>
-          <Route exact path="/client" render={() => {
+          <Route exact path="/" render={() => {
             if (!user) return (
               <div className="main-view" style={{ margin: '20px' }}>
                 <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
