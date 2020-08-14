@@ -215,23 +215,23 @@ export class MainView extends React.Component {
       <Router basename="/client">
         <div className="main-view">
           <Navbar bg="dark" variant="dark" className="header" fixed="top">
-            <Navbar.Brand href="/">MyFlix</Navbar.Brand>
+            <Navbar.Brand href="/client">MyFlix</Navbar.Brand>
             <Nav className="mr-auto" />
             {!user && (<Nav>
-              <Nav.Link href="/register">Sign Up</Nav.Link>
-              <Nav.Link href="/">Login</Nav.Link>
+              <Nav.Link href="/client/register">Sign Up</Nav.Link>
+              <Nav.Link href="/client">Login</Nav.Link>
             </Nav>)}
             {
               user && (
                 <React.Fragment>
                   <Nav>
-                    <Nav.Link href="/">Home</Nav.Link>
+                    <Nav.Link href="/client">Home</Nav.Link>
                   </Nav>
                   <Nav>
-                    <Nav.Link href="/movies/favourites">My Favorites</Nav.Link>
+                    <Nav.Link href="/client/movies/favourites">My Favorites</Nav.Link>
                   </Nav>
                   <NavDropdown title={user}>
-                    <NavDropdown.Item href="/profile">Update Profile</NavDropdown.Item>
+                    <NavDropdown.Item href="/client/profile">Update Profile</NavDropdown.Item>
                     <NavDropdown.Item onClick={() => this.onDegister()}>Deregister</NavDropdown.Item>
                     <NavDropdown.Divider />
                     <NavDropdown.Item onClick={() => this.onLoggedOut()}>LogOut</NavDropdown.Item>
@@ -240,7 +240,7 @@ export class MainView extends React.Component {
               )
             }
           </Navbar>
-          <Route exact path="/" render={() => {
+          <Route exact path="/client" render={() => {
             if (!user) return (
               <div className="main-view" style={{ margin: '20px' }}>
                 <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
