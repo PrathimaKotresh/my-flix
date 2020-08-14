@@ -1,6 +1,9 @@
 .movie-view {
   margin: 10% 30%;
 }
+.movie-view img {
+  width: 100%;
+}
 .registerForm {
   margin-top: 150px;
 }

@@ -28,7 +28,6 @@ export class MainView extends React.Component {
     this.state = {
       user: null,
       isRegister: null,
-      isFavouriteMoviesSelected: false
     };
   }
   // One of the "hooks" available in a React Component
@@ -56,7 +55,7 @@ export class MainView extends React.Component {
   }
 
   getUserData(token) {
-    axios.get('https://myflix-movieapp.herokuapp.com/user/' + this.state.user, {
+    axios.get('https://myflix-movieapp.herokuapp.com/users/' + localStorage.getItem('user'), {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
@@ -127,12 +126,6 @@ export class MainView extends React.Component {
       });
   }
 
-  onFavouritesClick() {
-    this.setState({
-      isFavouriteMoviesSelected: true,
-    });
-  }
-
   onAddToFavourites(movieId) {
     let accessToken = localStorage.getItem('token');
     if (accessToken) {
@@ -140,8 +133,7 @@ export class MainView extends React.Component {
         headers: { Authorization: `Bearer ${accessToken}` }
       })
         .then(response => {
-          const data = response.data
-          this.props.setUser(data);
+          this.props.setUser(response.data);
         })
         .catch(e => {
           console.log('No such user')
@@ -156,10 +148,7 @@ export class MainView extends React.Component {
         headers: { Authorization: `Bearer ${accessToken}` }
       })
         .then(response => {
-          const data = response.data;
-          const { userData } = this.props
-          userData.FavoriteMovies = data.FavoriteMovies
-          this.props.setUser(userData);
+          this.props.setUser(response.data);
         })
         .catch(e => {
           console.log('No such user')
@@ -197,8 +186,9 @@ export class MainView extends React.Component {
 
   render() {
     const { movies, userData, visibilityFilter } = this.props;
-    const { user, isRegister, isFavouriteMoviesSelected } = this.state;
+    const { user, isRegister } = this.state;
     const filteredFavoriteMovies = [...new Set(userData.FavoriteMovies)]
+    const favouriteMovies = movies.filter(movie => filteredFavoriteMovies.includes(movie._id))
     // add if condition and check if isRegister is true and return RegisterView component
     if (isRegister) return (
       <RegistrationView onRegister={(user, password) => this.onRegister(user, password)} />
@@ -224,7 +214,7 @@ export class MainView extends React.Component {
                     <Nav.Link href="/">Home</Nav.Link>
                   </Nav>
                   <Nav>
-                    <Nav.Link onClick={() => this.onFavouritesClick()}>My Favorites</Nav.Link>
+                    <Nav.Link href="/movies/favourites">My Favorites</Nav.Link>
                   </Nav>
                   <NavDropdown title={user}>
                     <NavDropdown.Item href="/profile">Update Profile</NavDropdown.Item>
@@ -243,38 +233,35 @@ export class MainView extends React.Component {
               </div>
             );
             return (
-              <div>
-                {
-                  isFavouriteMoviesSelected
-                    ? <MoviesList
-                      moviesToShow={filteredFavoriteMovies}
-                      allMovies={movies}
-                      favouriteMovies={filteredFavoriteMovies}
-                      removeFromFavourites={(movieId) => this.onRemoveFromFavourites(movieId)}
-                      isFavourites={true}
-                      visibilityFilter={visibilityFilter}
-                    />
-                    : <MoviesList
-                      moviesToShow={movies}
-                      allMovies={movies}
-                      favouriteMovies={filteredFavoriteMovies}
-                      removeFromFavourites={(movieId) => this.onRemoveFromFavourites(movieId)}
-                      addToFavourites={(movieId) => this.onAddToFavourites(movieId)}
-                      isFavourites={false}
-                      visibilityFilter={visibilityFilter}
-                    />
-                }
-              </div>
+              <MoviesList
+                moviesToShow={movies}
+                favouriteMovies={filteredFavoriteMovies}
+                removeFromFavourites={(movieId) => this.onRemoveFromFavourites(movieId)}
+                addToFavourites={(movieId) => this.onAddToFavourites(movieId)}
+                visibilityFilter={visibilityFilter}
+              />
             )
           }
           } />
           <Route path="/register" render={() => <RegistrationView onRegister={(user, password) => this.onRegister(user, password)} />} />
           <Route
             path="/movies/:movieId"
+            strict
+            sensitive
             render={
               ({ match }) =>
-                movies && <MovieView movie={movies.find(m => m._id === match.params.movieId)} removeFromFavourites={(movieId) => this.onRemoveFromFavourites(movieId)} addToFavourites={(movieId) => this.onAddToFavourites(movieId)} isFavourite={favouriteMovies && favouriteMovies.includes(match.params.movieId)} />}
+                movies && match.params.movieId !== 'favourites' && <MovieView movie={movies.find(m => m._id === match.params.movieId)} removeFromFavourites={(movieId) => this.onRemoveFromFavourites(movieId)} addToFavourites={(movieId) => this.onAddToFavourites(movieId)} isFavourite={filteredFavoriteMovies && filteredFavoriteMovies.includes(match.params.movieId)} />}
           />
+          <Route
+            path="/movies/favourites"
+            strict
+            sensitive
+            render={() => <MoviesList
+              moviesToShow={favouriteMovies}
+              favouriteMovies={filteredFavoriteMovies}
+              removeFromFavourites={(movieId) => this.onRemoveFromFavourites(movieId)}
+              visibilityFilter={visibilityFilter}
+            />} />
           <Route path="/director/:name" render={({ match }) => <DirectorView directorName={match.params.name} />} />
           <Route path="/genre/:name" render={({ match }) => <GenreView genreName={match.params.name} />} />
           <Route path="/profile" render={

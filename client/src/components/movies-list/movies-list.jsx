@@ -12,10 +12,9 @@ const mapStateToProps = state => {
 };
 
 function MoviesList(props) {
-  const { moviesToShow, allMovies, favouriteMovies, visibilityFilter, removeFromFavourites, isFavourites, addToFavourites } = props;
+  const { moviesToShow, favouriteMovies, visibilityFilter, removeFromFavourites, addToFavourites } = props;
   let filteredMovies = moviesToShow;
-  console.log('favouriteMovies - ', favouriteMovies)
-  if (!allMovies || !moviesToShow) return <div className="main-view" />;
+  if (!moviesToShow) return <div className="main-view" />;
 
   if (visibilityFilter !== '') {
     filteredMovies = moviesToShow.filter(m => m.Title.includes(visibilityFilter));
@@ -42,11 +41,9 @@ function MoviesList(props) {
 
 MoviesList.propTypes = {
   moviesToShow: PropTypes.array.isRequired,
-  allMovies: PropTypes.array.isRequired,
   visibilityFilter: PropTypes.string.isRequired,
   removeFromFavourites: PropTypes.func.isRequired,
   addToFavourites: PropTypes.func,
-  isFavourites: PropTypes.bool.isRequired,
   favouriteMovies: PropTypes.array.isRequired,
 };
 

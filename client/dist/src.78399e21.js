@@ -52243,15 +52243,12 @@ var mapStateToProps = function mapStateToProps(state) {
 
 function MoviesList(props) {
   var moviesToShow = props.moviesToShow,
-      allMovies = props.allMovies,
       favouriteMovies = props.favouriteMovies,
       visibilityFilter = props.visibilityFilter,
       _removeFromFavourites = props.removeFromFavourites,
-      isFavourites = props.isFavourites,
       _addToFavourites = props.addToFavourites;
   var filteredMovies = moviesToShow;
-  console.log('favouriteMovies - ', favouriteMovies);
-  if (!allMovies || !moviesToShow) return _react.default.createElement("div", {
+  if (!moviesToShow) return _react.default.createElement("div", {
     className: "main-view"
   });
 
@@ -52286,11 +52283,9 @@ function MoviesList(props) {
 
 MoviesList.propTypes = {
   moviesToShow: _propTypes.default.array.isRequired,
-  allMovies: _propTypes.default.array.isRequired,
   visibilityFilter: _propTypes.default.string.isRequired,
   removeFromFavourites: _propTypes.default.func.isRequired,
   addToFavourites: _propTypes.default.func,
-  isFavourites: _propTypes.default.bool.isRequired,
   favouriteMovies: _propTypes.default.array.isRequired
 };
 
@@ -52387,8 +52382,7 @@ var MainView = /*#__PURE__*/function (_React$Component) {
 
     _this.state = {
       user: null,
-      isRegister: null,
-      isFavouriteMoviesSelected: false
+      isRegister: null
     };
     return _this;
   } // One of the "hooks" available in a React Component
@@ -52427,7 +52421,7 @@ var MainView = /*#__PURE__*/function (_React$Component) {
     value: function getUserData(token) {
       var _this3 = this;
 
-      _axios.default.get('https://myflix-movieapp.herokuapp.com/user/' + this.state.user, {
+      _axios.default.get('https://myflix-movieapp.herokuapp.com/users/' + localStorage.getItem('user'), {
         headers: {
           Authorization: "Bearer ".concat(token)
         }
@@ -52511,13 +52505,6 @@ var MainView = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
-    key: "onFavouritesClick",
-    value: function onFavouritesClick() {
-      this.setState({
-        isFavouriteMoviesSelected: true
-      });
-    }
-  }, {
     key: "onAddToFavourites",
     value: function onAddToFavourites(movieId) {
       var _this6 = this;
@@ -52530,9 +52517,7 @@ var MainView = /*#__PURE__*/function (_React$Component) {
             Authorization: "Bearer ".concat(accessToken)
           }
         }).then(function (response) {
-          var data = response.data;
-
-          _this6.props.setUser(data);
+          _this6.props.setUser(response.data);
         }).catch(function (e) {
           console.log('No such user');
         });
@@ -52551,11 +52536,7 @@ var MainView = /*#__PURE__*/function (_React$Component) {
             Authorization: "Bearer ".concat(accessToken)
           }
         }).then(function (response) {
-          var data = response.data;
-          var userData = _this7.props.userData;
-          userData.FavoriteMovies = data.FavoriteMovies;
-
-          _this7.props.setUser(userData);
+          _this7.props.setUser(response.data);
         }).catch(function (e) {
           console.log('No such user');
         });
@@ -52605,11 +52586,13 @@ var MainView = /*#__PURE__*/function (_React$Component) {
           visibilityFilter = _this$props.visibilityFilter;
       var _this$state = this.state,
           user = _this$state.user,
-          isRegister = _this$state.isRegister,
-          isFavouriteMoviesSelected = _this$state.isFavouriteMoviesSelected;
+          isRegister = _this$state.isRegister;
 
-      var filteredFavoriteMovies = _toConsumableArray(new Set(userData.FavoriteMovies)); // add if condition and check if isRegister is true and return RegisterView component
+      var filteredFavoriteMovies = _toConsumableArray(new Set(userData.FavoriteMovies));
 
+      var favouriteMovies = movies.filter(function (movie) {
+        return filteredFavoriteMovies.includes(movie._id);
+      }); // add if condition and check if isRegister is true and return RegisterView component
 
       if (isRegister) return _react.default.createElement(_registrationView.RegistrationView, {
         onRegister: function onRegister(user, password) {
@@ -52638,9 +52621,7 @@ var MainView = /*#__PURE__*/function (_React$Component) {
       }, "Login")), user && _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(_reactBootstrap.Nav, null, _react.default.createElement(_reactBootstrap.Nav.Link, {
         href: "/"
       }, "Home")), _react.default.createElement(_reactBootstrap.Nav, null, _react.default.createElement(_reactBootstrap.Nav.Link, {
-        onClick: function onClick() {
-          return _this9.onFavouritesClick();
-        }
+        href: "/movies/favourites"
       }, "My Favorites")), _react.default.createElement(_reactBootstrap.NavDropdown, {
         title: user
       }, _react.default.createElement(_reactBootstrap.NavDropdown.Item, {
@@ -52667,18 +52648,8 @@ var MainView = /*#__PURE__*/function (_React$Component) {
               return _this9.onLoggedIn(user);
             }
           }));
-          return _react.default.createElement("div", null, isFavouriteMoviesSelected ? _react.default.createElement(_moviesList.default, {
-            moviesToShow: filteredFavoriteMovies,
-            allMovies: movies,
-            favouriteMovies: filteredFavoriteMovies,
-            removeFromFavourites: function removeFromFavourites(movieId) {
-              return _this9.onRemoveFromFavourites(movieId);
-            },
-            isFavourites: true,
-            visibilityFilter: visibilityFilter
-          }) : _react.default.createElement(_moviesList.default, {
+          return _react.default.createElement(_moviesList.default, {
             moviesToShow: movies,
-            allMovies: movies,
             favouriteMovies: filteredFavoriteMovies,
             removeFromFavourites: function removeFromFavourites(movieId) {
               return _this9.onRemoveFromFavourites(movieId);
@@ -52686,9 +52657,8 @@ var MainView = /*#__PURE__*/function (_React$Component) {
             addToFavourites: function addToFavourites(movieId) {
               return _this9.onAddToFavourites(movieId);
             },
-            isFavourites: false,
             visibilityFilter: visibilityFilter
-          }));
+          });
         }
       }), _react.default.createElement(_reactRouterDom.Route, {
         path: "/register",
@@ -52701,9 +52671,11 @@ var MainView = /*#__PURE__*/function (_React$Component) {
         }
       }), _react.default.createElement(_reactRouterDom.Route, {
         path: "/movies/:movieId",
+        strict: true,
+        sensitive: true,
         render: function render(_ref) {
           var match = _ref.match;
-          return movies && _react.default.createElement(_movieView.MovieView, {
+          return movies && match.params.movieId !== 'favourites' && _react.default.createElement(_movieView.MovieView, {
             movie: movies.find(function (m) {
               return m._id === match.params.movieId;
             }),
@@ -52713,7 +52685,21 @@ var MainView = /*#__PURE__*/function (_React$Component) {
             addToFavourites: function addToFavourites(movieId) {
               return _this9.onAddToFavourites(movieId);
             },
-            isFavourite: favouriteMovies && favouriteMovies.includes(match.params.movieId)
+            isFavourite: filteredFavoriteMovies && filteredFavoriteMovies.includes(match.params.movieId)
+          });
+        }
+      }), _react.default.createElement(_reactRouterDom.Route, {
+        path: "/movies/favourites",
+        strict: true,
+        sensitive: true,
+        render: function render() {
+          return _react.default.createElement(_moviesList.default, {
+            moviesToShow: favouriteMovies,
+            favouriteMovies: filteredFavoriteMovies,
+            removeFromFavourites: function removeFromFavourites(movieId) {
+              return _this9.onRemoveFromFavourites(movieId);
+            },
+            visibilityFilter: visibilityFilter
           });
         }
       }), _react.default.createElement(_reactRouterDom.Route, {
@@ -52942,7 +52928,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64599" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49421" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
