@@ -52066,7 +52066,12 @@ function setUser(value) {
     value: value
   };
 }
-},{}],"components/visibility-filter-input/visibility-filter-input.jsx":[function(require,module,exports) {
+},{}],"components/visibility-filter-input/visibility-filter-input.scss":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/visibility-filter-input/visibility-filter-input.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -52084,11 +52089,13 @@ var _Form = _interopRequireDefault(require("react-bootstrap/Form"));
 
 var _actions = require("../../actions/actions");
 
+require("./visibility-filter-input.scss");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function VisibilityFilterInput(props) {
   return _react.default.createElement(_Form.default.Control, {
-    className: "mb-3",
+    className: "mb-3 filter-bar",
     onChange: function onChange(e) {
       return props.setFilter(e.target.value);
     },
@@ -52106,7 +52113,7 @@ var _default = (0, _reactRedux.connect)(null, {
 })(VisibilityFilterInput);
 
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-redux":"../node_modules/react-redux/es/index.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","../../actions/actions":"actions/actions.js"}],"components/movie-card/movie-card.jsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-redux":"../node_modules/react-redux/es/index.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","../../actions/actions":"actions/actions.js","./visibility-filter-input.scss":"components/visibility-filter-input/visibility-filter-input.scss"}],"components/movie-card/movie-card.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -52258,6 +52265,12 @@ function MoviesList(props) {
     });
   }
 
+  if (moviesToShow.length === 0) {
+    return _react.default.createElement("h3", {
+      className: "empty-favourites"
+    }, "No Movies Found!");
+  }
+
   return _react.default.createElement("div", {
     className: "movies-list"
   }, _react.default.createElement("div", {
@@ -52266,7 +52279,9 @@ function MoviesList(props) {
     visibilityFilter: visibilityFilter
   })), _react.default.createElement("div", {
     className: "card-deck justify-content-center"
-  }, filteredMovies.map(function (m) {
+  }, filteredMovies.length === 0 && _react.default.createElement("h3", {
+    className: "filter-empty-movies"
+  }, "No Movies Found!"), filteredMovies.map(function (m) {
     return _react.default.createElement(_movieCard.MovieCard, {
       key: m._id,
       movie: m,
@@ -52382,7 +52397,8 @@ var MainView = /*#__PURE__*/function (_React$Component) {
 
     _this.state = {
       user: null,
-      isRegister: null
+      isRegister: null,
+      isLoading: false
     };
     return _this;
   } // One of the "hooks" available in a React Component
@@ -52406,12 +52422,20 @@ var MainView = /*#__PURE__*/function (_React$Component) {
     value: function getMovies(token) {
       var _this2 = this;
 
+      this.setState({
+        isLoading: true
+      });
+
       _axios.default.get('https://myflix-movieapp.herokuapp.com/movies', {
         headers: {
           Authorization: "Bearer ".concat(token)
         }
       }).then(function (response) {
         _this2.props.setMovies(response.data);
+
+        _this2.setState({
+          isLoading: false
+        });
       }).catch(function (error) {
         console.log(error);
       });
@@ -52447,10 +52471,16 @@ var MainView = /*#__PURE__*/function (_React$Component) {
     value: function onLoggedOut() {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      this.setState({
+      this.state = {
         user: null
+      };
+      this.props.setMovies([]);
+      this.props.setUser({
+        Email: null,
+        Birthday: null,
+        FavouriteMovies: []
       });
-      this.props.setUser(null);
+      window.open('/', '_self');
     }
   }, {
     key: "onRegisterClick",
@@ -52486,20 +52516,18 @@ var MainView = /*#__PURE__*/function (_React$Component) {
     value: function onDegister() {
       var _this5 = this;
 
-      _axios.default.delete('https://myflix-movieapp.herokuapp.com/users/' + this.state.user).then(function (response) {
+      this.setState({
+        isLoading: true
+      });
+
+      _axios.default.delete('https://myflix-movieapp.herokuapp.com/users/' + localStorage.getItem('user')).then(function (response) {
         var data = response.data;
 
         _this5.onLoggedOut();
 
-        _this5.state = {
-          user: null
-        };
-
-        _this5.props.setMovies([]);
-
-        _this5.props.setUser(null);
-
-        window.open('/', '_self');
+        _this5.setState({
+          isLoading: false
+        });
       }).catch(function (e) {
         console.log('Error deregistering');
       });
@@ -52586,7 +52614,8 @@ var MainView = /*#__PURE__*/function (_React$Component) {
           visibilityFilter = _this$props.visibilityFilter;
       var _this$state = this.state,
           user = _this$state.user,
-          isRegister = _this$state.isRegister;
+          isRegister = _this$state.isRegister,
+          isLoading = _this$state.isLoading;
 
       var filteredFavoriteMovies = _toConsumableArray(new Set(userData.FavoriteMovies));
 
@@ -52648,7 +52677,14 @@ var MainView = /*#__PURE__*/function (_React$Component) {
               return _this9.onLoggedIn(user);
             }
           }));
-          return _react.default.createElement(_moviesList.default, {
+          return isLoading ? _react.default.createElement("div", {
+            className: "loading-spinner"
+          }, _react.default.createElement(_reactBootstrap.Spinner, {
+            animation: "border",
+            role: "status"
+          }, _react.default.createElement("span", {
+            className: "sr-only"
+          }, "Loading..."))) : _react.default.createElement(_moviesList.default, {
             moviesToShow: movies,
             favouriteMovies: filteredFavoriteMovies,
             removeFromFavourites: function removeFromFavourites(movieId) {

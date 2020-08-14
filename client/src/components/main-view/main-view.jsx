@@ -12,7 +12,8 @@ import { ProfileView } from '../profile-view/profile-view';
 import {
   Navbar,
   Nav,
-  NavDropdown
+  NavDropdown,
+  Spinner
 } from 'react-bootstrap';
 import './main-view.scss';
 import { setMovies, setUser } from '../../actions/actions';
@@ -28,6 +29,7 @@ export class MainView extends React.Component {
     this.state = {
       user: null,
       isRegister: null,
+      isLoading: false,
     };
   }
   // One of the "hooks" available in a React Component
@@ -43,11 +45,17 @@ export class MainView extends React.Component {
   }
 
   getMovies(token) {
+    this.setState({
+      isLoading: true,
+    })
     axios.get('https://myflix-movieapp.herokuapp.com/movies', {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
         this.props.setMovies(response.data);
+        this.setState({
+          isLoading: false,
+        })
       })
       .catch(function (error) {
         console.log(error);
@@ -79,10 +87,16 @@ export class MainView extends React.Component {
   onLoggedOut() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    this.setState({
+    this.state = {
       user: null,
+    };
+    this.props.setMovies([]);
+    this.props.setUser({
+      Email: null,
+      Birthday: null,
+      FavouriteMovies: []
     });
-    this.props.setUser(null);
+    window.open('/client', '_self');
   }
 
   onRegisterClick() {
@@ -102,7 +116,7 @@ export class MainView extends React.Component {
         this.setState({
           isRegister: false
         });
-        window.open('/', '_self');
+        window.open('/client', '_self');
       })
       .catch(e => {
         console.log('No such user')
@@ -110,16 +124,16 @@ export class MainView extends React.Component {
   }
 
   onDegister() {
-    axios.delete('https://myflix-movieapp.herokuapp.com/users/' + this.state.user)
+    this.setState({
+      isLoading: true,
+    })
+    axios.delete('https://myflix-movieapp.herokuapp.com/users/' + localStorage.getItem('user'))
       .then(response => {
         const data = response.data;
         this.onLoggedOut()
-        this.state = {
-          user: null,
-        };
-        this.props.setMovies([]);
-        this.props.setUser(null);
-        window.open('/', '_self');
+        this.setState({
+          isLoading: false,
+        })
       })
       .catch(e => {
         console.log('Error deregistering')
@@ -176,7 +190,7 @@ export class MainView extends React.Component {
             user: data.Username,
           });
           localStorage.setItem('user', data.Username);
-          window.open('/', '_self');
+          window.open('/client', '_self');
         })
         .catch(e => {
           console.log('Error updating profile - ', e)
@@ -186,7 +200,7 @@ export class MainView extends React.Component {
 
   render() {
     const { movies, userData, visibilityFilter } = this.props;
-    const { user, isRegister } = this.state;
+    const { user, isRegister, isLoading } = this.state;
     const filteredFavoriteMovies = [...new Set(userData.FavoriteMovies)]
     const favouriteMovies = movies.filter(movie => filteredFavoriteMovies.includes(movie._id))
     // add if condition and check if isRegister is true and return RegisterView component
@@ -198,7 +212,7 @@ export class MainView extends React.Component {
     if (!movies) return <div className="main-view" />;
 
     return (
-      <Router>
+      <Router basename="/client">
         <div className="main-view">
           <Navbar bg="dark" variant="dark" className="header" fixed="top">
             <Navbar.Brand href="/">MyFlix</Navbar.Brand>
@@ -233,13 +247,19 @@ export class MainView extends React.Component {
               </div>
             );
             return (
-              <MoviesList
-                moviesToShow={movies}
-                favouriteMovies={filteredFavoriteMovies}
-                removeFromFavourites={(movieId) => this.onRemoveFromFavourites(movieId)}
-                addToFavourites={(movieId) => this.onAddToFavourites(movieId)}
-                visibilityFilter={visibilityFilter}
-              />
+              isLoading ? (
+                <div className="loading-spinner">
+                  <Spinner animation="border" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </Spinner>
+                </div>
+              ) : <MoviesList
+                  moviesToShow={movies}
+                  favouriteMovies={filteredFavoriteMovies}
+                  removeFromFavourites={(movieId) => this.onRemoveFromFavourites(movieId)}
+                  addToFavourites={(movieId) => this.onAddToFavourites(movieId)}
+                  visibilityFilter={visibilityFilter}
+                />
             )
           }
           } />

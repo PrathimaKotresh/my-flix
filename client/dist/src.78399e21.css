@@ -1,9 +1,6 @@
 .movie-view {
   margin: 10% 30%;
 }
-.movie-view img {
-  width: 100%;
-}
 .registerForm {
   margin-top: 150px;
 }
@@ -39,6 +36,15 @@
 .navbar-brand {
   font-size: xx-large;
 }
+
+.loading-spinner {
+  padding-top: 100px;
+}
+.filter-bar {
+  height: 50px;
+  border-bottom: 1px solid #454545;
+  padding: 16px;
+}
 .movies-filter-wrapper {
   max-width: 250px;
   padding-top: 100px;
@@ -48,6 +54,18 @@
 
 .card-deck {
   padding-top: 20px;
+}
+
+.filter-empty-movies {
+  padding-top: 20px;
+  color: yellowgreen;
+}
+
+.empty-favourites {
+  display: flex;
+  justify-content: center;
+  padding-top: 150px;
+  color: yellowgreen;
 }
 .my-flix {
   color: steelblue;

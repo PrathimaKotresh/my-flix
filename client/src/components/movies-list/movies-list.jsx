@@ -20,11 +20,16 @@ function MoviesList(props) {
     filteredMovies = moviesToShow.filter(m => m.Title.includes(visibilityFilter));
   }
 
+  if (moviesToShow.length === 0) {
+    return <h3 className='empty-favourites'>No Movies Found!</h3>
+  }
+
   return <div className="movies-list">
     <div className="movies-filter-wrapper">
       <VisibilityFilterInput visibilityFilter={visibilityFilter} />
     </div>
     <div className="card-deck justify-content-center">
+      {filteredMovies.length === 0 && <h3 className='filter-empty-movies'>No Movies Found!</h3>}
       {filteredMovies.map(
         m =>
           <MovieCard

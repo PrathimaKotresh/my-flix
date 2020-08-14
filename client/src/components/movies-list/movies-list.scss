@@ -8,3 +8,15 @@
 .card-deck {
   padding-top: 20px;
 }
+
+.filter-empty-movies {
+  padding-top: 20px;
+  color: yellowgreen;
+}
+
+.empty-favourites {
+  display: flex;
+  justify-content: center;
+  padding-top: 150px;
+  color: yellowgreen;
+}
