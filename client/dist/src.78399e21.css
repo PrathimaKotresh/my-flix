@@ -36,9 +36,15 @@
 .navbar-brand {
   font-size: xx-large;
 }
+.movies-filter-wrapper {
+  max-width: 250px;
+  padding-top: 100px;
+  margin: auto;
+  margin-right: 20px;
+}
 
 .card-deck {
-  padding-top: 100px;
+  padding-top: 20px;
 }
 .my-flix {
   color: steelblue;

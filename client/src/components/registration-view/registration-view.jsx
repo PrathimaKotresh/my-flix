@@ -22,7 +22,6 @@ export function RegistrationView(props) {
     })
       .then(response => {
         const data = response.data;
-        console.log(password)
         props.onRegister(data.Username, password);
       })
       .catch(e => {
