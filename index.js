@@ -41,7 +41,7 @@ app.use(bodyParser.json());
 const Movies = Models.Movie;
 const Users = Models.User;
 
-var allowedOrigins = ['http://localhost:1234', 'http://myflix-movieapp.herokuapp.com', 'https://myflix-movieapp.herokuapp.com', '*'];
+var allowedOrigins = ['http://localhost:1234', '*'];
 
 app.use(cors({
   origin: (origin, callback) => {
