@@ -106,7 +106,7 @@ export class MainView extends React.Component {
   }
 
   onRegister(user, password) {
-    axios.post('http://myflix-movieapp.herokuapp.com/login', {
+    axios.post('https://myflix-movieapp.herokuapp.com/login', {
       Username: user,
       Password: password
     })
@@ -143,7 +143,7 @@ export class MainView extends React.Component {
   onAddToFavourites(movieId) {
     let accessToken = localStorage.getItem('token');
     if (accessToken) {
-      axios.post(`http://myflix-movieapp.herokuapp.com/users/${this.state.user}/movies/favorites/${movieId}`, {
+      axios.post(`https://myflix-movieapp.herokuapp.com/users/${this.state.user}/movies/favorites/${movieId}`, {
         headers: { Authorization: `Bearer ${accessToken}` }
       })
         .then(response => {
@@ -158,7 +158,7 @@ export class MainView extends React.Component {
   onRemoveFromFavourites(movieId) {
     let accessToken = localStorage.getItem('token');
     if (accessToken) {
-      axios.delete(`http://myflix-movieapp.herokuapp.com/users/${this.state.user}/movies/favorites/${movieId}`, {
+      axios.delete(`https://myflix-movieapp.herokuapp.com/users/${this.state.user}/movies/favorites/${movieId}`, {
         headers: { Authorization: `Bearer ${accessToken}` }
       })
         .then(response => {
@@ -173,7 +173,7 @@ export class MainView extends React.Component {
   onProfileUpdate(user, password, email, birthday) {
     let accessToken = localStorage.getItem('token');
     if (accessToken) {
-      axios.put(`http://myflix-movieapp.herokuapp.com/users/${this.state.user}`, {
+      axios.put(`https://myflix-movieapp.herokuapp.com/users/${this.state.user}`, {
         Username: user,
         Password: password,
         Email: email,
