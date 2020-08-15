@@ -52642,21 +52642,21 @@ var MainView = /*#__PURE__*/function (_React$Component) {
         className: "header",
         fixed: "top"
       }, _react.default.createElement(_reactBootstrap.Navbar.Brand, {
-        href: "/"
+        href: "/client"
       }, "MyFlix"), _react.default.createElement(_reactBootstrap.Nav, {
         className: "mr-auto"
       }), !user && _react.default.createElement(_reactBootstrap.Nav, null, _react.default.createElement(_reactBootstrap.Nav.Link, {
-        href: "/register"
+        href: "/client/register"
       }, "Sign Up"), _react.default.createElement(_reactBootstrap.Nav.Link, {
-        href: "/"
+        href: "/client"
       }, "Login")), user && _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(_reactBootstrap.Nav, null, _react.default.createElement(_reactBootstrap.Nav.Link, {
-        href: "/"
+        href: "/client"
       }, "Home")), _react.default.createElement(_reactBootstrap.Nav, null, _react.default.createElement(_reactBootstrap.Nav.Link, {
-        href: "/movies/favourites"
+        href: "/client/movies/favourites"
       }, "My Favorites")), _react.default.createElement(_reactBootstrap.NavDropdown, {
         title: user
       }, _react.default.createElement(_reactBootstrap.NavDropdown.Item, {
-        href: "/profile"
+        href: "/client/profile"
       }, "Update Profile"), _react.default.createElement(_reactBootstrap.NavDropdown.Item, {
         onClick: function onClick() {
           return _this9.onDegister();
@@ -52966,7 +52966,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56941" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59755" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
