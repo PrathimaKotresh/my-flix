@@ -3,21 +3,25 @@ const cors = require('cors');
 const express = require('express'),
   bodyParser = require('body-parser'),
   uuid = require('uuid'),
+
   //Morgan middleware library to log all requests
   morgan = require('morgan');
+const app = express();
+app.use(bodyParser.json());
 const passport = require('passport');
 require('./passport.js');
+
 //require express-validator library
 const {
   check,
   validationResult
 } = require('express-validator');
+
 //integrate Mongoose into REST API
 const mongoose = require('mongoose');
 const Models = require('./models.js');
-
-const app = express();
-
+const Movies = Models.Movie;
+const Users = Models.User;
 //below commented code is for local database
 //mongoose.connect('mongodb://localhost:27017/myFlixDB', {
 //  useNewUrlParser: true,
@@ -31,16 +35,6 @@ mongoose.connect(process.env.CONNECTION_URI, {
 });
 
 app.use(morgan('common'));
-app.use(express.static('public'));
-app.use("/client", express.static(path.join(__dirname, "client", "dist")));
-app.get("/client/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
-});
-app.use(bodyParser.json());
-
-const Movies = Models.Movie;
-const Users = Models.User;
-
 var allowedOrigins = ['http://localhost:1234', '*'];
 
 app.use(cors({
@@ -278,13 +272,17 @@ app.delete('/users/:Username', (req, res) => {
     });
 });
 
+// listen for requests
+const port = process.env.PORT || 8080;
+app.listen(port, '0.0.0.0', () => {
+  console.log('Listening on Port ' + port);
+});
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('Something broke!');
 });
-
-// listen for requests
-const port = process.env.PORT || 3000;
-app.listen(port, '0.0.0.0', () => {
-  console.log('Listening on Port ' + port);
+app.use(express.static("public"));
+app.use("/client", express.static(path.join(__dirname, "client", "dist")));
+app.get("/client/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });
