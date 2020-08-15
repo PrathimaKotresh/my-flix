@@ -35,7 +35,7 @@ mongoose.connect(process.env.CONNECTION_URI, {
 });
 
 app.use(morgan('common'));
-var allowedOrigins = ['http://localhost:1234', '*'];
+var allowedOrigins = ['http://localhost:1234', 'http://myflix-movieapp.herokuapp.com', '*'];
 
 app.use(cors({
   origin: (origin, callback) => {
