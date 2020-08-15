@@ -17,7 +17,7 @@ function MoviesList(props) {
   if (!moviesToShow) return <div className="main-view" />;
 
   if (visibilityFilter !== '') {
-    filteredMovies = moviesToShow.filter(m => m.Title.includes(visibilityFilter));
+    filteredMovies = moviesToShow.filter(m => m.Title.toLowerCase().includes(visibilityFilter.toLowerCase()));
   }
 
   if (moviesToShow.length === 0) {
