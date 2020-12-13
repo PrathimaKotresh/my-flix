@@ -5,6 +5,12 @@ import Col from 'react-bootstrap/Col';
 import PropTypes from 'prop-types';
 import './profile-view.scss';
 
+/**
+* Profile information view with edit option
+* @function ProfileView
+* @param {func} props - username, email, birthday, onProfileUpdate props
+* @returns {ProfileView}
+*/
 export function ProfileView(props) {
   const [username, setUsername] = useState(props.username);
   const [password, setPassword] = useState('');

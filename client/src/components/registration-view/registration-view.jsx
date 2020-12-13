@@ -6,6 +6,12 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import './registration-view.scss';
 
+/**
+* Login view
+* @function LoginView
+* @param {func} props - onLoggedIn props
+* @returns {LoginView}
+*/
 export function RegistrationView(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');

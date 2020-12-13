@@ -7,9 +7,22 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import './login-view.scss';
 
+/**
+* Login view
+* @function LoginView
+* @param {func} props - onLoggedIn props
+* @returns {LoginView}
+*/
 export function LoginView(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  /**
+   * username/password input request sent to /login post endpoint 
+   * @function handleSubmit
+   * @param {event}
+   * @return {object} User information
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
     /* Send a request to the server for authentication */

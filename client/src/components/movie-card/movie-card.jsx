@@ -4,6 +4,12 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { Link } from "react-router-dom";
 
+/**
+* Movie card to show movie information view
+* @class MovieCard
+* @param {object} props - movie, addToFavourites, isFavourite, removeFromFavourites props
+* @returns {MovieCard}
+*/
 export class MovieCard extends React.Component {
   render() {
     const { movie, addToFavourites, isFavourite, removeFromFavourites } = this.props;

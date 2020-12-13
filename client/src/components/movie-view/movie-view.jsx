@@ -4,6 +4,12 @@ import Button from 'react-bootstrap/Button';
 import { Link } from "react-router-dom";
 import './movie-view.scss';
 
+/**
+* Movie information view with genre, direction links and delete movie from favourite link
+* @class MovieView
+* @param {string} props - movie, addToFavourites, isFavourite, removeFromFavourites props
+* @returns {MovieView}
+*/
 export class MovieView extends React.Component {
 
   constructor() {

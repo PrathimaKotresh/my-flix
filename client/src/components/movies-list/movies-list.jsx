@@ -11,6 +11,12 @@ const mapStateToProps = state => {
   return { visibilityFilter };
 };
 
+/**
+* Movie list view to show all movies cards
+* @function MoviesList
+* @param {object} props - moviesToShow, favouriteMovies, visibilityFilter, removeFromFavourites, addToFavourites props
+* @returns {MoviesList}
+*/
 function MoviesList(props) {
   const { moviesToShow, favouriteMovies, visibilityFilter, removeFromFavourites, addToFavourites } = props;
   let filteredMovies = moviesToShow;

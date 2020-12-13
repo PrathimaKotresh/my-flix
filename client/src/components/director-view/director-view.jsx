@@ -4,6 +4,12 @@ import Badge from 'react-bootstrap/Badge';
 import axios from 'axios';
 import './director-view.scss';
 
+/**
+* Director information view
+* @function DirectorView
+* @param {string} props - directorName props
+* @returns {DirectorView}
+*/
 export function DirectorView(props) {
   const [director, setDirector] = useState(null);
 

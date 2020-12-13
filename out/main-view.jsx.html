@@ -1,4 +1,32 @@
-import React from 'react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: main-view.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: main-view.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react';
 import axios from 'axios'; //to connect to API
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -267,55 +295,55 @@ export class MainView extends React.Component {
     const favouriteMovies = movies.filter(movie => filteredFavoriteMovies.includes(movie._id))
     // add if condition and check if isRegister is true and return RegisterView component
     if (isRegister) return (
-      <RegistrationView onRegister={(user, password) => this.onRegister(user, password)} />
+      &lt;RegistrationView onRegister={(user, password) => this.onRegister(user, password)} />
     )
 
     // Before the movies have been loaded
-    if (!movies) return <div className="main-view" />;
+    if (!movies) return &lt;div className="main-view" />;
 
     return (
-      <Router basename="/client">
-        <div className="main-view">
-          <Navbar bg="dark" variant="dark" className="header" fixed="top">
-            <Navbar.Brand href="/client">MyFlix</Navbar.Brand>
-            <Nav className="mr-auto" />
-            {!user && (<Nav>
-              <Nav.Link href="/client/register">Sign Up</Nav.Link>
-              <Nav.Link href="/client">Login</Nav.Link>
-            </Nav>)}
+      &lt;Router basename="/client">
+        &lt;div className="main-view">
+          &lt;Navbar bg="dark" variant="dark" className="header" fixed="top">
+            &lt;Navbar.Brand href="/client">MyFlix&lt;/Navbar.Brand>
+            &lt;Nav className="mr-auto" />
+            {!user &amp;&amp; (&lt;Nav>
+              &lt;Nav.Link href="/client/register">Sign Up&lt;/Nav.Link>
+              &lt;Nav.Link href="/client">Login&lt;/Nav.Link>
+            &lt;/Nav>)}
             {
-              user && (
-                <React.Fragment>
-                  <Nav>
-                    <Nav.Link href="/client">Home</Nav.Link>
-                  </Nav>
-                  <Nav>
-                    <Nav.Link href="/client/movies/favourites">My Favorites</Nav.Link>
-                  </Nav>
-                  <NavDropdown title={user}>
-                    <NavDropdown.Item href="/client/profile">Update Profile</NavDropdown.Item>
-                    <NavDropdown.Item onClick={() => this.onDegister()}>Deregister</NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item onClick={() => this.onLoggedOut()}>LogOut</NavDropdown.Item>
-                  </NavDropdown>
-                </React.Fragment>
+              user &amp;&amp; (
+                &lt;React.Fragment>
+                  &lt;Nav>
+                    &lt;Nav.Link href="/client">Home&lt;/Nav.Link>
+                  &lt;/Nav>
+                  &lt;Nav>
+                    &lt;Nav.Link href="/client/movies/favourites">My Favorites&lt;/Nav.Link>
+                  &lt;/Nav>
+                  &lt;NavDropdown title={user}>
+                    &lt;NavDropdown.Item href="/client/profile">Update Profile&lt;/NavDropdown.Item>
+                    &lt;NavDropdown.Item onClick={() => this.onDegister()}>Deregister&lt;/NavDropdown.Item>
+                    &lt;NavDropdown.Divider />
+                    &lt;NavDropdown.Item onClick={() => this.onLoggedOut()}>LogOut&lt;/NavDropdown.Item>
+                  &lt;/NavDropdown>
+                &lt;/React.Fragment>
               )
             }
-          </Navbar>
-          <Route exact path="/" render={() => {
+          &lt;/Navbar>
+          &lt;Route exact path="/" render={() => {
             if (!user) return (
-              <div className="main-view" style={{ margin: '20px' }}>
-                <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
-              </div>
+              &lt;div className="main-view" style={{ margin: '20px' }}>
+                &lt;LoginView onLoggedIn={user => this.onLoggedIn(user)} />
+              &lt;/div>
             );
             return (
               isLoading ? (
-                <div className="loading-spinner">
-                  <Spinner animation="border" role="status">
-                    <span className="sr-only">Loading...</span>
-                  </Spinner>
-                </div>
-              ) : <MoviesList
+                &lt;div className="loading-spinner">
+                  &lt;Spinner animation="border" role="status">
+                    &lt;span className="sr-only">Loading...&lt;/span>
+                  &lt;/Spinner>
+                &lt;/div>
+              ) : &lt;MoviesList
                   moviesToShow={movies}
                   favouriteMovies={filteredFavoriteMovies}
                   removeFromFavourites={(movieId) => this.onRemoveFromFavourites(movieId)}
@@ -325,36 +353,36 @@ export class MainView extends React.Component {
             )
           }
           } />
-          <Route path="/register" render={() => <RegistrationView onRegister={(user, password) => this.onRegister(user, password)} />} />
-          <Route
+          &lt;Route path="/register" render={() => &lt;RegistrationView onRegister={(user, password) => this.onRegister(user, password)} />} />
+          &lt;Route
             path="/movies/:movieId"
             strict
             sensitive
             render={
               ({ match }) =>
-                movies && match.params.movieId !== 'favourites' && <MovieView movie={movies.find(m => m._id === match.params.movieId)} removeFromFavourites={(movieId) => this.onRemoveFromFavourites(movieId)} addToFavourites={(movieId) => this.onAddToFavourites(movieId)} isFavourite={filteredFavoriteMovies && filteredFavoriteMovies.includes(match.params.movieId)} />}
+                movies &amp;&amp; match.params.movieId !== 'favourites' &amp;&amp; &lt;MovieView movie={movies.find(m => m._id === match.params.movieId)} removeFromFavourites={(movieId) => this.onRemoveFromFavourites(movieId)} addToFavourites={(movieId) => this.onAddToFavourites(movieId)} isFavourite={filteredFavoriteMovies &amp;&amp; filteredFavoriteMovies.includes(match.params.movieId)} />}
           />
-          <Route
+          &lt;Route
             path="/movies/favourites"
             strict
             sensitive
-            render={() => <MoviesList
+            render={() => &lt;MoviesList
               moviesToShow={favouriteMovies}
               favouriteMovies={filteredFavoriteMovies}
               removeFromFavourites={(movieId) => this.onRemoveFromFavourites(movieId)}
               visibilityFilter={visibilityFilter}
             />} />
-          <Route path="/director/:name" render={({ match }) => <DirectorView directorName={match.params.name} />} />
-          <Route path="/genre/:name" render={({ match }) => <GenreView genreName={match.params.name} />} />
-          <Route path="/profile" render={
+          &lt;Route path="/director/:name" render={({ match }) => &lt;DirectorView directorName={match.params.name} />} />
+          &lt;Route path="/genre/:name" render={({ match }) => &lt;GenreView genreName={match.params.name} />} />
+          &lt;Route path="/profile" render={
             () =>
-              user && userData.Email && userData.Birthday && <ProfileView
+              user &amp;&amp; userData.Email &amp;&amp; userData.Birthday &amp;&amp; &lt;ProfileView
                 username={user}
                 email={userData.Email}
                 birthday={userData.Birthday.split('T')[0]}
                 onProfileUpdate={(user, password, email, birthday) => this.onProfileUpdate(user, password, email, birthday)} />} />
-        </div>
-      </Router>
+        &lt;/div>
+      &lt;/Router>
     );
   }
 }
@@ -379,3 +407,26 @@ let mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps, { setMovies, setUser })(MainView);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="MainView.html">MainView</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getMovies">getMovies</a></li><li><a href="global.html#getUserData">getUserData</a></li><li><a href="global.html#onAddToFavourites">onAddToFavourites</a></li><li><a href="global.html#onDegister">onDegister</a></li><li><a href="global.html#onLoggedIn">onLoggedIn</a></li><li><a href="global.html#onLoggedOut">onLoggedOut</a></li><li><a href="global.html#onRegister">onRegister</a></li><li><a href="global.html#onRegisterClick">onRegisterClick</a></li><li><a href="global.html#onRemoveFromFavourites">onRemoveFromFavourites</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Dec 14 2020 00:10:49 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

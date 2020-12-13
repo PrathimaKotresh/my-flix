@@ -5,6 +5,12 @@ import Form from 'react-bootstrap/Form';
 import { setFilter } from '../../actions/actions';
 import './visibility-filter-input.scss';
 
+/**
+* Movie filter
+* @function VisibilityFilterInput
+* @param {func} props - setFilter props
+* @returns {VisibilityFilterInput}
+*/
 function VisibilityFilterInput(props) {
   return (
     <Form.Control

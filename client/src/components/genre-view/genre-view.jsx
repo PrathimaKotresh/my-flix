@@ -4,6 +4,12 @@ import Badge from 'react-bootstrap/Badge';
 import axios from 'axios';
 import './genre-view.scss';
 
+/**
+* Movie Genre information view
+* @function GenreView
+* @param {string} props - genreName props
+* @returns {GenreView}
+*/
 export function GenreView(props) {
   const [genre, setGenre] = useState(null);
 
