@@ -7,10 +7,10 @@ import axios from 'axios';
 import './registration-view.scss';
 
 /**
-* Login view
-* @function LoginView
-* @param {func} props - onLoggedIn props
-* @returns {LoginView}
+* User Registration view
+* @function RegistrationView
+* @param {func} props - onRegister props
+* @returns {RegistrationView}
 */
 export function RegistrationView(props) {
   const [username, setUsername] = useState('');
